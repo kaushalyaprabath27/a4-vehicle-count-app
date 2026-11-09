@@ -33,10 +33,10 @@
                     <input type="text" id="surveyor-name" placeholder="Enter your name" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label for="location-name"><i class="fa-solid fa-map-pin"></i> Count location (station)</label>
-                    <div id="location-chips" class="chips loc-chips" role="radiogroup" aria-label="Station"></div>
+                    <label for="location-name"><i class="fa-solid fa-map-pin"></i> Count location</label>
+                    <div id="location-chips" class="chips loc-chips hidden" role="radiogroup" aria-label="Location"></div>
                     <div class="input-with-button">
-                        <input type="text" id="location-name" placeholder="Pick a station above, or type the place / use GPS" autocomplete="off">
+                        <input type="text" id="location-name" placeholder="Type the place (e.g. Hanwella junction) or use GPS" autocomplete="off">
                         <button id="btn-gps" class="btn-icon" type="button" title="Use GPS" aria-label="Use GPS"><i class="fa-solid fa-location-crosshairs"></i></button>
                     </div>
                     <p id="gps-status" class="status-text hidden"></p>

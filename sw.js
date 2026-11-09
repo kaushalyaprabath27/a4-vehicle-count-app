@@ -1,6 +1,6 @@
 // Offline shell for the A4 Vehicle Count PWA.
 // Bump CACHE_NAME whenever app files change so devices pick up the update.
-const CACHE_NAME = 'a4-vehicle-count-v4';
+const CACHE_NAME = 'a4-vehicle-count-v5';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',

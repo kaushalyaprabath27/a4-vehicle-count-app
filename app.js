@@ -203,16 +203,14 @@ const inputName = $('surveyor-name');
 const inputLoc = $('location-name');
 const btnStart = $('btn-start');
 
-// "od4" / "OD-4" / "od 4" -> "OD 4", so every phone writes the station the same way.
 function normLocation(s) {
-    s = (s || '').trim().replace(/\s+/g, ' ');
-    const m = s.match(/^od\s*[-_.]?\s*(\d+)$/i);
-    return m ? 'OD ' + Number(m[1]) : s;
+    return (s || '').trim().replace(/\s+/g, ' ');
 }
 
 function renderLocationChips() {
     const box = $('location-chips');
     box.innerHTML = '';
+    box.classList.toggle('hidden', !CONFIG.locations.length);
     CONFIG.locations.forEach(l => {
         const b = el('button', 'chip-opt', `<span>${escapeHtml(l)}</span>`);
         b.type = 'button';

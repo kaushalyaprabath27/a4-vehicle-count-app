@@ -4,7 +4,7 @@ Offline-first PWA for classified vehicle counts by time interval and direction, 
 
 ## How an enumerator uses it
 
-1. **Setup:** enumerator name and count location: tap a station (OD 1 – OD 7), type another place, or use GPS. Then **Next**.
+1. **Setup:** enumerator name and count location (type the place, e.g. Hanwella junction, or use GPS). Then **Next**.
 2. **Interval:** date (defaults to today), **From** and **To** (tap and roll the hour/minute wheels, or tap Now), and **Direction**: tap **To Colombo** or **From Colombo**, or **Other** to type another direction (e.g. Hanwella to Kaduwela).
 3. **Count:** tap a counter for every vehicle that passes in that direction. Counters are in two groups, each with its own running total:
    - **Passenger vehicles:** Motorcycle, 3-wheeler, Taxi, Car / Jeep, Passenger van, Office van, School van, Minibus, Large bus.
@@ -28,7 +28,7 @@ The sheet menu **Vehicle Count → Build / refresh summary** makes two tabs:
 ## Deployment
 
 1. **Backend:** new Google Sheet → Extensions → Apps Script → paste [`backend/a4_vehicle_count_apps_script.js`](backend/a4_vehicle_count_apps_script.js) → run `setup` once → Deploy → New deployment → Web app (Execute as: Me, Access: Anyone) → copy the `/exec` URL.
-2. Paste the URL into `appsScriptUrl` in [`config.js`](config.js). Stations and direction buttons are also set there.
+2. Paste the URL into `appsScriptUrl` in [`config.js`](config.js). Direction buttons (and optional location buttons) are also set there.
 3. **Frontend:** push this folder to its own GitHub repo and connect it to Netlify (no build command, publish directory `.`).
 4. After changing app files, bump `CACHE_NAME` in [`sw.js`](sw.js).
 
