@@ -52,8 +52,8 @@ const TYPES = [
     { id: 'mediumTruck', group: 'freight', label: 'Medium truck', sub: '2 axles / 6 wheels', icon: 'fa-truck' },
     { id: 'largeTruck', group: 'freight', label: 'Large truck', sub: '2 axles / 6 wheels', icon: 'fa-truck-front' },
     { id: 'heavyVehicle', group: 'freight', label: 'Heavy vehicle', sub: '3 axles / 10 wheels', icon: 'fa-truck-field' },
-    { id: 'container20', group: 'freight', label: 'Container with trailer', sub: '3 axles / 20 ft', icon: 'fa-truck-moving' },
-    { id: 'container40', group: 'freight', label: 'Container with trailer', sub: 'Multi-axle / 40 ft', icon: 'fa-truck-ramp-box' },
+    { id: 'container20', group: 'freight', label: 'Container 20 ft', sub: '3 axles, with trailer', icon: 'fa-truck-moving' },
+    { id: 'container40', group: 'freight', label: 'Container 40 ft', sub: 'Multi-axle, with trailer', icon: 'fa-truck-ramp-box' },
     { id: 'otherFreight', group: 'freight', label: 'Other freight', sub: 'Write it in Notes', icon: 'fa-ellipsis' }
 ];
 const typeName = t => t.sub && !/Notes/.test(t.sub) ? `${t.label} (${t.sub})` : t.label;
@@ -425,7 +425,9 @@ function renderCounters() {
     TYPES.forEach(t => {
         const box = countersEl.querySelector(`[data-type="${t.id}"]`);
         const n = draft.counts[t.id] || 0;
-        box.querySelector('.ctr-count').textContent = n;
+        const cnt = box.querySelector('.ctr-count');
+        cnt.textContent = n;
+        cnt.classList.toggle('big', n >= 1000);
         box.querySelector('.counter-main').setAttribute('aria-label', `${typeName(t)}: ${n}. Tap to add one.`);
         box.querySelector('.ctr-minus').disabled = n === 0;
     });

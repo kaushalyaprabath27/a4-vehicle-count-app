@@ -683,3 +683,49 @@ body.light-theme .date-input { color-scheme: light; }
 @media (max-width: 420px) {
     .dir-chips .chip-opt { font-size: 0.88rem; padding: 8px 6px; }
 }
+
+/* Portrait phones: compact layout so all 17 counters fit on one screen.
+   Each counter is about 48 px tall, still a comfortable thumb tap. */
+@media (max-width: 600px) and (orientation: portrait) {
+    .topbar { padding: 4px 8px; padding-top: max(4px, env(safe-area-inset-top)); gap: 4px; }
+    .form-scroll { padding: 6px 6px 16px; }
+    .count-wrap { gap: 6px; }
+    .q.interval { padding: 8px; }
+    .interval-grid { grid-template-columns: 1.3fr 1fr 1fr; gap: 4px 6px; }
+    .interval-grid .field:first-child { grid-column: auto; }
+    .interval-grid .field-wide { grid-column: 1 / -1; }
+    .field { gap: 2px; }
+    .field-label { font-size: 0.66rem; }
+    .date-input { min-height: 40px; padding: 2px 6px; font-size: 0.82rem; min-width: 0; width: 100%; }
+    .interval .time-btn { min-height: 40px; font-size: 1.1rem; padding: 2px 6px; justify-content: center; }
+    .interval .time-btn i { display: none; }
+    .interval input[type="text"] { min-height: 40px; }
+    .dir-chips { margin: 0; }
+    .dir-chips .chip-opt { min-height: 38px; padding: 4px 6px; }
+    .interval .stay-info { margin-top: 2px; font-size: 0.72rem; }
+
+    .counters { gap: 3px; }
+    .counter-group { margin: 2px 2px 0; font-size: 0.7rem; }
+    .counter-group .group-total { padding: 0 8px; }
+    .counter-grid { gap: 5px; }
+    .counter-main {
+        min-height: 48px;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-areas: "icon count" "label label" "sub sub";
+        align-items: center;
+        justify-items: start;
+        gap: 0 5px;
+        padding: 3px 4px 3px 7px;
+        border-width: 1.5px;
+        text-align: left;
+    }
+    .counter-main .ctr-icon { grid-area: icon; font-size: 1rem; }
+    .counter-main .svg-icon.ctr-icon { width: 1.3rem; height: 1.05rem; }
+    .counter-main .ctr-count { grid-area: count; font-size: 1.15rem; }
+    .counter-main .ctr-count.big { font-size: 0.95rem; }
+    .counter-main .ctr-label, .counter-main .ctr-sub { max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .counter-main .ctr-label { grid-area: label; font-size: 0.7rem; line-height: 1.15; }
+    .counter-main .ctr-sub { grid-area: sub; font-size: 0.58rem; line-height: 1.1; margin-top: 0; }
+    .ctr-minus { width: 26px; height: 26px; top: 3px; right: 3px; font-size: 0.7rem; }
+}
