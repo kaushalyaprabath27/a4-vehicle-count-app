@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>A4 Vehicle Count</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+<body>
+
+    <button id="theme-toggle" class="theme-btn" title="Toggle theme" aria-label="Toggle theme">
+        <i class="fa-solid fa-moon"></i>
+    </button>
+
+    <div id="app-container">
+
+        <!-- Screen 1: Setup -->
+        <section id="screen-setup" class="screen active">
+            <div class="card">
+                <div class="icon-container"><i class="fa-solid fa-car-side"></i></div>
+                <h1 class="title">Classified Vehicle Count</h1>
+                <p class="subtitle">A4 Godagama – Avissawella widening · count by time interval</p>
+
+                <div class="form-group">
+                    <label for="surveyor-name"><i class="fa-solid fa-user"></i> Enumerator name</label>
+                    <input type="text" id="surveyor-name" placeholder="Enter your name" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="location-name"><i class="fa-solid fa-map-pin"></i> Count location (station)</label>
+                    <div id="location-chips" class="chips loc-chips" role="radiogroup" aria-label="Station"></div>
+                    <div class="input-with-button">
+                        <input type="text" id="location-name" placeholder="Pick a station above, or type the place / use GPS" autocomplete="off">
+                        <button id="btn-gps" class="btn-icon" type="button" title="Use GPS" aria-label="Use GPS"><i class="fa-solid fa-location-crosshairs"></i></button>
+                    </div>
+                    <p id="gps-status" class="status-text hidden"></p>
+                </div>
+
+                <button id="btn-start" class="btn-primary w-full btn-disabled" disabled>Next <i class="fa-solid fa-arrow-right"></i></button>
+                <button id="btn-export-setup" class="btn-link" type="button"><i class="fa-solid fa-download"></i> Export Local Backup</button>
+            </div>
+        </section>
+
+        <!-- Screen 2: Count -->
+        <section id="screen-survey" class="screen survey-screen">
+            <header class="topbar">
+                <div class="session-info">
+                    <span class="chip chip-strong"><i class="fa-solid fa-map-pin"></i> <b id="info-location">-</b></span>
+                    <span class="chip hide-sm"><i class="fa-solid fa-user"></i> <span id="info-name">-</span></span>
+                </div>
+                <div class="header-actions">
+                    <span id="sync-status" class="sync-status"><span class="dot"></span><span class="sync-text">Online</span></span>
+                    <span class="chip" title="Intervals saved in this survey"><i class="fa-solid fa-clipboard-check"></i> <b id="count-session">0</b></span>
+                    <button id="btn-undo-save" class="icon-btn" title="Delete the last saved interval"><i class="fa-solid fa-rotate-left"></i><span class="hide-sm">Undo save</span></button>
+                    <button id="btn-export" class="icon-btn" title="Export local backup"><i class="fa-solid fa-download"></i></button>
+                    <button id="btn-end" class="icon-btn danger" title="End survey"><i class="fa-solid fa-flag-checkered"></i><span class="hide-sm">End</span></button>
+                </div>
+            </header>
+
+            <main class="form-scroll" id="form-scroll">
+                <div class="count-wrap">
+                    <!-- Interval -->
+                    <section class="q interval">
+                        <div class="interval-grid">
+                            <div class="field">
+                                <label for="count-date" class="field-label">Date</label>
+                                <input type="date" id="count-date" class="date-input">
+                            </div>
+                            <div class="field">
+                                <span class="field-label" id="lbl-from">From</span>
+                                <button type="button" class="time-btn" id="btn-from" aria-labelledby="lbl-from"><i class="fa-regular fa-clock"></i><span class="time-val">--:--</span></button>
+                            </div>
+                            <div class="field">
+                                <span class="field-label" id="lbl-to">To</span>
+                                <button type="button" class="time-btn" id="btn-to" aria-labelledby="lbl-to"><i class="fa-regular fa-clock"></i><span class="time-val">--:--</span></button>
+                            </div>
+                            <div class="field field-wide">
+                                <label for="direction" class="field-label">Direction</label>
+                                <div id="direction-chips" class="chips dir-chips" role="radiogroup" aria-label="Direction"></div>
+                                <input type="text" id="direction" list="direction-list" placeholder="or type, e.g. Hanwella to Kaduwela" autocomplete="off">
+                                <datalist id="direction-list"></datalist>
+                            </div>
+                        </div>
+                        <div id="interval-info" class="stay-info"></div>
+                    </section>
+
+                    <!-- Counters -->
+                    <section class="counters" id="counters" aria-label="Vehicle counters"></section>
+
+                    <div class="counter-tools">
+                        <button id="btn-undo-tap" class="btn-secondary" type="button"><i class="fa-solid fa-rotate-left"></i> Undo last tap</button>
+                        <button id="btn-reset" class="btn-secondary" type="button"><i class="fa-solid fa-eraser"></i> Reset counts</button>
+                    </div>
+
+                    <!-- Notes for this interval -->
+                    <section class="q notes-box">
+                        <label for="interval-notes" class="q-label"><span>Notes</span><span class="q-hint">Optional, saved with this interval</span></label>
+                        <textarea id="interval-notes" rows="2" placeholder="e.g. Other freight: tractor; rain; road blocked; accident"></textarea>
+                    </section>
+
+                    <!-- Saved intervals -->
+                    <section class="q saved">
+                        <div class="q-label"><span>Saved intervals</span></div>
+                        <div id="saved-list" class="saved-list"></div>
+                    </section>
+                </div>
+            </main>
+
+            <footer class="save-bar">
+                <span class="progress">Interval total <b id="total-count" class="total-num">0</b></span>
+                <button id="btn-save" class="btn-primary" type="button"><i class="fa-solid fa-floppy-disk"></i> Save interval</button>
+            </footer>
+        </section>
+    </div>
+
+    <!-- Time wheel picker (bottom sheet) -->
+    <div id="time-sheet" class="sheet hidden" role="dialog" aria-modal="true" aria-labelledby="time-sheet-title">
+        <div class="sheet-card">
+            <h3 id="time-sheet-title">From</h3>
+            <div class="wheels">
+                <div class="wheel-wrap"><div class="wheel" id="wheel-hour" tabindex="0" aria-label="Hour"></div><span class="wheel-cap">Hour</span></div>
+                <div class="wheel-colon">:</div>
+                <div class="wheel-wrap"><div class="wheel" id="wheel-minute" tabindex="0" aria-label="Minute"></div><span class="wheel-cap">Minute</span></div>
+                <div class="wheel-band" aria-hidden="true"></div>
+            </div>
+            <div class="sheet-actions">
+                <button id="time-clear" class="btn-secondary" type="button">Clear</button>
+                <button id="time-now" class="btn-secondary" type="button"><i class="fa-solid fa-clock"></i> Now</button>
+                <button id="time-done" class="btn-primary" type="button">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal (confirm / summary) -->
+    <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-card">
+            <h3 id="modal-title"></h3>
+            <div id="modal-body"></div>
+            <div class="modal-actions">
+                <button id="modal-cancel" class="btn-secondary">Cancel</button>
+                <button id="modal-ok" class="btn-primary">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container" aria-live="polite"></div>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW registration failed:', err));
+            });
+        }
+    </script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
